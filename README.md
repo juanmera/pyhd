@@ -1,7 +1,7 @@
 # PyHD
 A simple library for hierarchically deterministic (HD) keys that implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki), (partially) [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) and [BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki).
 
-The objective is to have a address management in a single package.
+The objective is to have address management in a single package.
 
 ## Usage
 ### BIP32

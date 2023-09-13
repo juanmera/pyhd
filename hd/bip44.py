@@ -5,8 +5,6 @@ from __future__ import annotations
 import enum
 from hd.bip32 import PrivateKey
 
-PURPOSE = 44
-
 
 class Change(enum.Enum):
     External = 0
@@ -18,9 +16,9 @@ class Coin(enum.Enum):
 
 
 class Wallet:
-    def __init__(self, master_key: hd.bip32.PrivateKey, coin: Coin):
+    def __init__(self, master_key: PrivateKey, coin: Coin, purpose: int):
         self.master_key = master_key
-        self.coin_key = self.master_key.child(PURPOSE, True).child(coin.value, True)
+        self.coin_key = self.master_key.child(purpose, True).child(coin.value, True)
         self.account_key = None
         self.set_account(0)
 
@@ -35,11 +33,15 @@ class Wallet:
 
 
 class BitcoinWallet(Wallet):
+    purpose = 44
+
+    def __init__(self, master_key: PrivateKey, coin: Coin):
+        super().__init__(master_key, coin, self.purpose)
+
     @classmethod
     def from_seed(cls, seed: bytes) -> BitcoinWallet:
         return cls(PrivateKey.from_seed(seed), Coin.Bitcoin)
 
     @classmethod
-    def from_mnemonic(cls, mnemonic: bytes, passphrase: bytes=b'') -> BitcoinWallet:
+    def from_mnemonic(cls, mnemonic: bytes, passphrase: bytes = b'') -> BitcoinWallet:
         return cls(PrivateKey.from_mnemonic(mnemonic, passphrase), Coin.Bitcoin)
-
